@@ -31,9 +31,8 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 
 public class PassCard extends LinearLayout {
-    private String AppName = "";
     private String PassWord = "";
-    private String Category = "";
+    private PassWord passWord;
     private View card;
     public PassCard(Context context) {
         super(context);
@@ -65,12 +64,14 @@ public class PassCard extends LinearLayout {
         this.setOnClickListener((event) -> {
             Intent intent = new Intent(getContext(),PassInfo.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.putExtra("AppName", AppName);
+            intent.putExtra("ID", passWord.getId());
+            intent.putExtra("AppName", passWord.getAppName());
             intent.putExtra("PassWord", PassWord);
-            intent.putExtra("Category", Category);
+            intent.putExtra("UserName", passWord.getUserName());
+            intent.putExtra("Category", passWord.getCategory());
             getContext().startActivity(intent);
         });
-        this.setBackgroundDrawable(ContextCompat.getDrawable(getContext(),R.drawable.passcardbg));
+        setBackgroundDrawable(ContextCompat.getDrawable(getContext(),R.drawable.passcardbg));
         LayoutInflater inflater = LayoutInflater.from(getContext());
 
         card = inflater.inflate(R.layout.pass_card,null);
@@ -89,13 +90,12 @@ public class PassCard extends LinearLayout {
     }
 
     public void setPassWord(PassWord pass, SecretKey secretKey, IvParameterSpec IvParam){
-        this.AppName = pass.getAppName();
+        passWord = pass;
         try{
             this.PassWord = new String(Decifra(pass.getPass(), secretKey, IvParam), StandardCharsets.UTF_8);
         }   catch (Exception e){
             //this.PassWord = pass.getPass().toString();
         }
-        this.Category = pass.getCategory();
         TextView TVAppName = card.findViewById(R.id.AppName);
         TVAppName.setText(pass.getAppName());
         TextView TVCategory = card.findViewById(R.id.Category);
@@ -106,15 +106,16 @@ public class PassCard extends LinearLayout {
     //Set Catogory Color View:
     private void SetCategoryColor(View view){
         view.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.circle));
-        if (Category.equals("Social"))          view.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.category_social));
-        else if (Category.equals("Games"))      view.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.category_games));
-        else if (Category.equals("Web"))        view.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.category_web));
-        else if (Category.equals("Other"))      view.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.category_other));
+        if (passWord.getCategory().equals("Social"))          view.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.category_social));
+        else if (passWord.getCategory().equals("Games"))      view.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.category_games));
+        else if (passWord.getCategory().equals("Web"))        view.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.category_web));
+        else if (passWord.getCategory().equals("Other"))      view.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.category_other));
     }
 
-    public String getAppName(){return AppName;}
+    public String getAppName(){return passWord.getAppName();}
     public String getPassWord(){return PassWord;}
-    public String getCategory(){return Category;}
+    public String getUserName(){return passWord.getUserName();}
+    public String getCategory(){return passWord.getCategory();}
 
     private byte[] Decifra(byte[] x, SecretKey secretKey, IvParameterSpec ivParam) throws InvalidAlgorithmParameterException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException, NoSuchPaddingException, NoSuchAlgorithmException {
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");

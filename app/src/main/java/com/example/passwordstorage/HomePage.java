@@ -78,7 +78,7 @@ public class HomePage extends AppCompatActivity {
             try {
                 database db = Room.databaseBuilder(getApplicationContext(),database.class,"password").build();
                 dao Dao = db.getPassWordDao();
-                //Dao.Insert(new PassWord("Lol",Cifra("Theo2020".getBytes()),"Games"));
+                //Dao.Insert(new PassWord("Lol",Cifra("Theo2020".getBytes()),"TheoMt59","Games"));
                 List<PassWord> passWords = Dao.getAll();
                 String str = passWords.toString();
                 Handler handler = new Handler(Looper.getMainLooper());
