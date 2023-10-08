@@ -40,21 +40,19 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/user" />
 
-    <com.example.passwordstorage.PassCard
-        android:id="@+id/passCard"
-        android:layout_width="260dp"
-        android:layout_height="75dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <ListView
         android:id="@+id/list"
-        android:layout_width="324dp"
-        android:layout_height="178dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="72dp"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="15dp"
+        android:paddingRight="20dp"
+        android:paddingLeft="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

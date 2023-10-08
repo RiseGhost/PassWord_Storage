@@ -1,11 +1,8 @@
-package com.example.passwordstorage;
+package com.example.passwordstorage.XMLElements;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,10 +10,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+
+import com.example.passwordstorage.PassInfo;
+import com.example.passwordstorage.PassWord;
+import com.example.passwordstorage.R;
 
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
@@ -32,7 +32,7 @@ import javax.crypto.spec.IvParameterSpec;
 
 public class PassCard extends LinearLayout {
     private String PassWord = "";
-    private PassWord passWord;
+    private com.example.passwordstorage.PassWord passWord;
     private View card;
     public PassCard(Context context) {
         super(context);
@@ -62,7 +62,7 @@ public class PassCard extends LinearLayout {
 
     private void init(){
         this.setOnClickListener((event) -> {
-            Intent intent = new Intent(getContext(),PassInfo.class);
+            Intent intent = new Intent(getContext(), PassInfo.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra("ID", passWord.getId());
             intent.putExtra("AppName", passWord.getAppName());
@@ -71,7 +71,7 @@ public class PassCard extends LinearLayout {
             intent.putExtra("Category", passWord.getCategory());
             getContext().startActivity(intent);
         });
-        setBackgroundDrawable(ContextCompat.getDrawable(getContext(),R.drawable.passcardbg));
+        setBackgroundDrawable(ContextCompat.getDrawable(getContext(), R.drawable.passcardbg));
         LayoutInflater inflater = LayoutInflater.from(getContext());
 
         card = inflater.inflate(R.layout.pass_card,null);

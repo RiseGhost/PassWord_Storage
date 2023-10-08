@@ -1,12 +1,14 @@
 package com.example.passwordstorage;
 
 import android.content.Context;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
 import androidx.annotation.NonNull;
+
+import com.example.passwordstorage.XMLElements.BTNadd;
+import com.example.passwordstorage.XMLElements.PassCard;
 
 import java.util.List;
 
@@ -32,8 +34,9 @@ public class AdapterPassWord extends ArrayAdapter<PassWord> {
     @NonNull
     @Override
     public View getView(int position, @NonNull View conterView, @NonNull ViewGroup parent){
-        if (position == getCount() - 1)  //Last posicion plus 1, add a buttom to add new PassWord:
-            return LayoutInflater.from(context).inflate(R.layout.activity_main,null);
+        if (position == getCount() - 1){    //Last posicion plus 1, add a buttom to add new PassWord:
+            return new BTNadd(getContext());
+        }
         else
             return new PassCard(context,PassWords.get(position),secretKey,ivParam);
     }

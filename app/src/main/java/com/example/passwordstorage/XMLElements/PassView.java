@@ -1,4 +1,4 @@
-package com.example.passwordstorage;
+package com.example.passwordstorage.XMLElements;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -11,6 +11,9 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.core.content.ContextCompat;
+
+import com.example.passwordstorage.PassWord;
+import com.example.passwordstorage.R;
 
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -50,7 +53,7 @@ public class PassView extends LinearLayout {
     }
 
     public void init(){
-        setBackgroundDrawable(ContextCompat.getDrawable(getContext(),R.drawable.passcardbg));
+        setBackgroundDrawable(ContextCompat.getDrawable(getContext(), R.drawable.passcardbg));
         LayoutInflater inflater = LayoutInflater.from(getContext());
         view = inflater.inflate(R.layout.pass_view,null);
         LayoutParams layoutParams = new LinearLayoutCompat.LayoutParams(
