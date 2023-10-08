@@ -30,7 +30,10 @@ import javax.crypto.spec.SecretKeySpec;
 
 public class PassView extends LinearLayout {
     private PassWord passWord;
-    private String Pass;
+    private String Pass = "";
+    private String AppName = "";
+    private String UserName = "";
+    private String Category = "";
     private View view;
     public PassView(Context context) {
         super(context);
@@ -76,16 +79,41 @@ public class PassView extends LinearLayout {
             TVUserName.setText(UserName);
             TVPass.setText(Pass);
             TVCategory.setText(Category);
-            setCategoryColor(view.findViewById(R.id.CategoryView));
+            setCategoryColor(view.findViewById(R.id.CategoryView),passWord.getCategory());
         }   catch (Exception e){}
     }
 
+    public void setAppName(String AppName){
+        TextView TVAppName = view.findViewById(R.id.AppName);
+        this.AppName = AppName;
+        TVAppName.setText(AppName);
+    }
+
+    public void setUserName(String UserName){
+        TextView TVUserName = view.findViewById(R.id.UserName);
+        this.UserName = UserName;
+        TVUserName.setText(UserName);
+    }
+
+    public void setPass(String Pass){
+        TextView TVPass = view.findViewById(R.id.Pass);
+        this.Pass = Pass;
+        TVPass.setText(Pass);
+    }
+
+    public void setCategory(String Category){
+        TextView TVCategory = view.findViewById(R.id.Category);
+        this.Category = Category;
+        TVCategory.setText(Category);
+        setCategoryColor(view.findViewById(R.id.CategoryView),Category);
+    }
+
     //Use to set Category View circle color
-    private void setCategoryColor(View view){
-        if(passWord.getCategory().equals("Social"))    view.setBackground(ContextCompat.getDrawable(getContext(),R.drawable.category_social));
-        if(passWord.getCategory().equals("Games"))     view.setBackground(ContextCompat.getDrawable(getContext(),R.drawable.category_games));
-        if(passWord.getCategory().equals("Web"))       view.setBackground(ContextCompat.getDrawable(getContext(),R.drawable.category_web));
-        if(passWord.getCategory().equals("Other"))     view.setBackground(ContextCompat.getDrawable(getContext(),R.drawable.category_other));
+    private void setCategoryColor(View view, String Category){
+        if(Category.equals("Social"))    view.setBackground(ContextCompat.getDrawable(getContext(),R.drawable.category_social));
+        if(Category.equals("Games"))     view.setBackground(ContextCompat.getDrawable(getContext(),R.drawable.category_games));
+        if(Category.equals("Web"))       view.setBackground(ContextCompat.getDrawable(getContext(),R.drawable.category_web));
+        if(Category.equals("Other"))     view.setBackground(ContextCompat.getDrawable(getContext(),R.drawable.category_other));
     }
 
     private byte[] Cifra(byte[] x) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {

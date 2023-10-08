@@ -8,10 +8,12 @@
     android:background="#202028">
     <com.example.passwordstorage.XMLElements.PassView
         android:id="@+id/PassView"
-        android:layout_width="330dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="52dp"
         android:padding="10dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginLeft="25dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
