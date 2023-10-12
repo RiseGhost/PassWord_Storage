@@ -15,12 +15,15 @@ public class PassWord {
     private String UserName;
     @ColumnInfo(name = "Category")
     private String Category;
+    @ColumnInfo(name = "Theme")
+    private int Theme;
 
-    public PassWord(String AppName, byte[] Pass, String UserName, String Category){
+    public PassWord(String AppName, byte[] Pass, String UserName, String Category, int Theme){
         this.AppName = AppName;
         this.Pass = Pass;
         this.UserName = UserName;
         this.Category = Category;
+        this.Theme = Theme;
     }
 
     public int getId(){return id;}
@@ -28,6 +31,7 @@ public class PassWord {
     public byte[] getPass(){return Pass;}
     public String getUserName(){return UserName;}
     public String getCategory(){return Category;}
+    public int getTheme(){return Theme;}
 
     public void setAppName(String AppName){this.AppName = AppName;}
     public void setPass(byte[] Pass){this.Pass = Pass;}

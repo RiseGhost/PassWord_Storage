@@ -3,5 +3,6 @@
     <style name="Base.Theme.PasswordStorage" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Status bar color. -->
         <item name="android:statusBarColor">#202028</item>
+        <item name="android:navigationBarColor">#202028</item>
     </style>
 </resources>

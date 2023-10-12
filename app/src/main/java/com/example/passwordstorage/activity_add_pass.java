@@ -1,24 +1,21 @@
 package com.example.passwordstorage;
 
-import static java.lang.Math.PI;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.room.Room;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.example.passwordstorage.XMLElements.PassView;
+import com.example.passwordstorage.database.dao.dao;
+import com.example.passwordstorage.database.database;
 
 public class activity_add_pass extends AppCompatActivity {
     private PassView passView;
@@ -35,6 +32,12 @@ public class activity_add_pass extends AppCompatActivity {
         setRadioFunc(findViewById(R.id.Games));
         setRadioFunc(findViewById(R.id.Web));
         setRadioFunc(findViewById(R.id.Other));
+        RadioButton theme1 = findViewById(R.id.theme1);
+        theme1.setChecked(true);
+        setRadioThemeFunc(theme1,ContextCompat.getDrawable(getApplicationContext(),R.drawable.radio_theme_1),ContextCompat.getDrawable(getApplicationContext(),R.drawable.radio_theme_1_select),1);
+        setRadioThemeFunc(findViewById(R.id.theme2),ContextCompat.getDrawable(getApplicationContext(),R.drawable.radio_theme_2),ContextCompat.getDrawable(getApplicationContext(),R.drawable.radio_theme_2_select),2);
+        setRadioThemeFunc(findViewById(R.id.theme3),ContextCompat.getDrawable(getApplicationContext(),R.drawable.radio_theme_3),ContextCompat.getDrawable(getApplicationContext(),R.drawable.radio_theme_3_select),3);
+        setRadioThemeFunc(findViewById(R.id.theme4),ContextCompat.getDrawable(getApplicationContext(),R.drawable.radio_theme_4),ContextCompat.getDrawable(getApplicationContext(),R.drawable.radio_theme_4_select),4);
 
         //Programing the interaction of text inputs with PassView
         //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -75,6 +78,21 @@ public class activity_add_pass extends AppCompatActivity {
             public void afterTextChanged(Editable s) {}
         });
         //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        findViewById(R.id.Insert).setOnClickListener((event) -> {
+            if (ETAppName.getText().toString().equals("")){
+                Toast.makeText(activity_add_pass.this,"AppName Invalid",Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (ETUserName.getText().toString().equals("")){
+                Toast.makeText(activity_add_pass.this,"UserName Invalid",Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (ETPassWord.getText().toString().equals("")){
+                Toast.makeText(activity_add_pass.this,"PassWord Invalid",Toast.LENGTH_SHORT).show();
+                return;
+            }
+            new DB();
+        });
     }
 
     public void setRadioFunc(RadioButton btn){
@@ -88,5 +106,30 @@ public class activity_add_pass extends AppCompatActivity {
                 else                btn.setBackground(null);
             }
         });
+    }
+
+    public void setRadioThemeFunc(RadioButton btn, Drawable NotSelect, Drawable Select,int Theme){
+        btn.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if(isChecked){
+                btn.setBackground(Select);
+                passView.setBackgroundView(Theme);
+            }
+            else            btn.setBackground(NotSelect);
+        });
+    }
+
+    private class DB extends Thread{
+
+        public DB(){start();}
+
+        @Override
+        public void run(){
+            try {
+                database db = Room.databaseBuilder(getApplicationContext(), database.class,"password").build();
+                dao Dao = db.getPassWordDao();
+                Dao.Insert(passView.BuildPassWord());
+                finish();
+            }   catch (Exception e){}
+        }
     }
 }

@@ -34,6 +34,7 @@ public class PassCard extends LinearLayout {
     private String PassWord = "";
     private com.example.passwordstorage.PassWord passWord;
     private View card;
+    private int Theme = 0;
     public PassCard(Context context) {
         super(context);
         init();
@@ -58,6 +59,7 @@ public class PassCard extends LinearLayout {
         super(context);
         init();
         setPassWord(passWord,secretKey,ivParam);
+        setBackgroundCard();
     }
 
     private void init(){
@@ -69,9 +71,9 @@ public class PassCard extends LinearLayout {
             intent.putExtra("PassWord", PassWord);
             intent.putExtra("UserName", passWord.getUserName());
             intent.putExtra("Category", passWord.getCategory());
+            intent.putExtra("Theme",passWord.getTheme());
             getContext().startActivity(intent);
         });
-        setBackgroundDrawable(ContextCompat.getDrawable(getContext(), R.drawable.passcardbg));
         LayoutInflater inflater = LayoutInflater.from(getContext());
 
         card = inflater.inflate(R.layout.pass_card,null);
@@ -110,6 +112,14 @@ public class PassCard extends LinearLayout {
         else if (passWord.getCategory().equals("Games"))      view.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.category_games));
         else if (passWord.getCategory().equals("Web"))        view.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.category_web));
         else if (passWord.getCategory().equals("Other"))      view.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.category_other));
+    }
+
+    private void setBackgroundCard(){
+        if (passWord.getTheme() == 1)           setBackground(ContextCompat.getDrawable(getContext(),R.drawable.passcardbg_1));
+        else if(passWord.getTheme() == 2)       setBackground(ContextCompat.getDrawable(getContext(),R.drawable.passcardbg_2));
+        else if(passWord.getTheme() == 3)       setBackground(ContextCompat.getDrawable(getContext(),R.drawable.passcardbg_3));
+        else if(passWord.getTheme() == 4)       setBackground(ContextCompat.getDrawable(getContext(),R.drawable.passcardbg_4));
+        else                                    setBackground(ContextCompat.getDrawable(getContext(),R.drawable.passcardbg_1));
     }
 
     public String getAppName(){return passWord.getAppName();}

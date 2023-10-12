@@ -43,9 +43,10 @@ public class HomePage extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("cipher",MODE_PRIVATE);
         String sk = sharedPreferences.getString("secretkey","");
         String iv = sharedPreferences.getString("iv","");
-        try {
-            secretKey = new SecretKeySpec(Base64.getDecoder().decode(sk),"AES");
-            ivParam = new IvParameterSpec(Base64.getDecoder().decode(iv));
+        secretKey = new SecretKeySpec(Base64.getDecoder().decode(sk),"AES");
+        ivParam = new IvParameterSpec(Base64.getDecoder().decode(iv));
+        /*try {
+
             String str = "Cona <3";
             byte[] c = Cifra(str.getBytes(StandardCharsets.US_ASCII));
             byte[] d = Decifra(c);
@@ -53,7 +54,13 @@ public class HomePage extends AppCompatActivity {
             Toast.makeText(this,new String(d,StandardCharsets.US_ASCII),Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             Log.e("Cifra",e.getMessage());
-        }
+        }*/
+        new DB();
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
         new DB();
     }
 
@@ -79,12 +86,13 @@ public class HomePage extends AppCompatActivity {
             try {
                 database db = Room.databaseBuilder(getApplicationContext(),database.class,"password").build();
                 dao Dao = db.getPassWordDao();
-                //Dao.Insert(new PassWord("Lol",Cifra("Theo2020".getBytes()),"TheoMt59","Games"));
+                //Dao.Insert(new PassWord("LoL",Cifra("Theo2020".getBytes()),"TheoMt59","Games",2));
+                //Dao.Insert(new PassWord("Twitter",Cifra("Jose Miguel".getBytes()),"Jose@1234","Social",1));
                 List<PassWord> passWords = Dao.getAll();
                 String str = passWords.toString();
                 Handler handler = new Handler(Looper.getMainLooper());
                 handler.post(() -> {
-                    Toast.makeText(getApplicationContext(),String.valueOf(passWords.size()),Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(),String.valueOf(passWords.size()),Toast.LENGTH_SHORT).show();
                     ListView listView = findViewById(R.id.list);
                     AdapterPassWord adapter = new AdapterPassWord(getApplicationContext(), android.R.layout.simple_list_item_1,passWords,secretKey,ivParam);
                     listView.setAdapter(adapter);
