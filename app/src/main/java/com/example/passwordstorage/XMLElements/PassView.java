@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat;
 
 import com.example.passwordstorage.PassWord;
 import com.example.passwordstorage.R;
+import com.example.passwordstorage.SecuryCifra;
 
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -71,7 +72,7 @@ public class PassView extends LinearLayout {
 
     public void setPassWord(String AppName, String Pass, String UserName, String Category, int Theme){
         try{
-            passWord = new PassWord(AppName,Cifra(Pass.getBytes()),UserName,Category,Theme);
+            passWord = new PassWord(AppName,new SecuryCifra(getContext()).Cifra(Pass.getBytes()),UserName,Category,Theme);
             this.Pass = Pass;
             TextView TVTittle = view.findViewById(R.id.AppName);
             TextView TVUserName = view.findViewById(R.id.UserName);
@@ -130,17 +131,6 @@ public class PassView extends LinearLayout {
 
     //Build the new PassWord with current data:
     public PassWord BuildPassWord() throws InvalidAlgorithmParameterException, NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
-        return new PassWord(AppName,Cifra(Pass.getBytes()),UserName,Category,Theme);
-    }
-
-    private byte[] Cifra(byte[] x) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
-        SharedPreferences sharedPreferences = getContext().getSharedPreferences("cipher", Context.MODE_PRIVATE);
-        String sk = sharedPreferences.getString("secretkey","");
-        String iv = sharedPreferences.getString("iv","");
-        SecretKey secretKey = new SecretKeySpec(Base64.getDecoder().decode(sk),"AES");
-        IvParameterSpec ivParam = new IvParameterSpec(Base64.getDecoder().decode(iv));
-        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-        cipher.init(Cipher.ENCRYPT_MODE,secretKey,ivParam);
-        return cipher.doFinal(x);
+        return new PassWord(AppName,new SecuryCifra(getContext()).Cifra(Pass.getBytes()),UserName,Category,Theme);
     }
 }

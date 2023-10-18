@@ -19,16 +19,12 @@ public class AdapterPassWord extends ArrayAdapter<PassWord> {
     private final Context context;
     private int resource;
     private final List<PassWord> PassWords;
-    SecretKey secretKey;
-    IvParameterSpec ivParam;
 
-    public AdapterPassWord(@NonNull Context context, int resource, @NonNull List<PassWord> PassWords, SecretKey secretKey, IvParameterSpec ivParam) {
+    public AdapterPassWord(@NonNull Context context, int resource, @NonNull List<PassWord> PassWords) {
         super(context, resource);
         this.context = context;
         this.resource = resource;
         this.PassWords = PassWords;
-        this.secretKey = secretKey;
-        this.ivParam = ivParam;
     }
 
     @NonNull
@@ -38,7 +34,7 @@ public class AdapterPassWord extends ArrayAdapter<PassWord> {
             return new BTNadd(getContext());
         }
         else
-            return new PassCard(context,PassWords.get(position),secretKey,ivParam);
+            return new PassCard(context,PassWords.get(position));
     }
 
     //Retorna mais 1 doque o tamanho original da lista porque no fim da lista é necessários adicinar uma view que terá o conteúdo para adicionar uma nova PassWord:

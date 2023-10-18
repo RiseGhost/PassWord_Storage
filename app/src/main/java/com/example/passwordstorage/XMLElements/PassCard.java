@@ -17,6 +17,7 @@ import androidx.core.content.ContextCompat;
 import com.example.passwordstorage.PassInfo;
 import com.example.passwordstorage.PassWord;
 import com.example.passwordstorage.R;
+import com.example.passwordstorage.SecuryCifra;
 
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
@@ -55,10 +56,10 @@ public class PassCard extends LinearLayout {
         init();
     }
 
-    public PassCard(Context context, PassWord passWord, SecretKey secretKey, IvParameterSpec ivParam){
+    public PassCard(Context context, PassWord passWord){
         super(context);
         init();
-        setPassWord(passWord,secretKey,ivParam);
+        setPassWord(passWord);
         setBackgroundCard();
     }
 
@@ -91,10 +92,10 @@ public class PassCard extends LinearLayout {
         setGravity(Gravity.CENTER_VERTICAL);
     }
 
-    public void setPassWord(PassWord pass, SecretKey secretKey, IvParameterSpec IvParam){
+    public void setPassWord(PassWord pass){
         passWord = pass;
         try{
-            this.PassWord = new String(Decifra(pass.getPass(), secretKey, IvParam), StandardCharsets.UTF_8);
+            this.PassWord = new String(new SecuryCifra(getContext()).Decifra(pass.getPass()), StandardCharsets.UTF_8);
         }   catch (Exception e){
             //this.PassWord = pass.getPass().toString();
         }

@@ -3,33 +3,21 @@ package com.example.passwordstorage;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
-import android.widget.Adapter;
 import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.RadioGroup;
 
+import com.example.passwordstorage.XMLElements.Catgory_BTN;
 import com.example.passwordstorage.database.dao.dao;
 import com.example.passwordstorage.database.database;
 
-import java.nio.charset.StandardCharsets;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
 import java.util.List;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
 
 public class HomePage extends AppCompatActivity {
     private static SecretKey secretKey;
@@ -40,11 +28,8 @@ public class HomePage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
         ListView listView = findViewById(R.id.list);
-        SharedPreferences sharedPreferences = getSharedPreferences("cipher",MODE_PRIVATE);
-        String sk = sharedPreferences.getString("secretkey","");
-        String iv = sharedPreferences.getString("iv","");
-        secretKey = new SecretKeySpec(Base64.getDecoder().decode(sk),"AES");
-        ivParam = new IvParameterSpec(Base64.getDecoder().decode(iv));
+        secretKey = new SecuryCifra(getApplicationContext()).getSecretKey();
+        ivParam = new SecuryCifra(getApplicationContext()).getIvParam();
         /*try {
 
             String str = "Cona <3";
@@ -56,24 +41,6 @@ public class HomePage extends AppCompatActivity {
             Log.e("Cifra",e.getMessage());
         }*/
         new DB();
-    }
-
-    @Override
-    public void onResume(){
-        super.onResume();
-        new DB();
-    }
-
-    private byte[] Cifra(byte[] x) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
-        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-        cipher.init(Cipher.ENCRYPT_MODE,secretKey,ivParam);
-        return cipher.doFinal(x);
-    }
-
-    private byte[] Decifra(byte[] x) throws InvalidAlgorithmParameterException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException, NoSuchPaddingException, NoSuchAlgorithmException {
-        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-        cipher.init(Cipher.DECRYPT_MODE,secretKey,ivParam);
-        return cipher.doFinal(x);
     }
 
     private class DB extends Thread{
@@ -94,8 +61,18 @@ public class HomePage extends AppCompatActivity {
                 handler.post(() -> {
                     //Toast.makeText(getApplicationContext(),String.valueOf(passWords.size()),Toast.LENGTH_SHORT).show();
                     ListView listView = findViewById(R.id.list);
-                    AdapterPassWord adapter = new AdapterPassWord(getApplicationContext(), android.R.layout.simple_list_item_1,passWords,secretKey,ivParam);
+                    AdapterPassWord adapter = new AdapterPassWord(getApplicationContext(), android.R.layout.simple_list_item_1,passWords);
                     listView.setAdapter(adapter);
+                    RadioGroup CategorySelect = findViewById(R.id.CategorySelect);
+                    CategorySelect.removeAllViews();
+                    Catgory_BTN All = new Catgory_BTN(getApplicationContext(),"All",listView,Dao);
+                    CategorySelect.addView(All);
+                    CategorySelect.addView(new Catgory_BTN(getApplicationContext(),"Social",listView,Dao));
+                    CategorySelect.addView(new Catgory_BTN(getApplicationContext(),"Games",listView,Dao));
+                    CategorySelect.addView(new Catgory_BTN(getApplicationContext(),"Web",listView,Dao));
+                    CategorySelect.addView(new Catgory_BTN(getApplicationContext(),"Other",listView,Dao));
+                    All.setChecked(true);
+
                 });
             }   catch (Exception e){
                 Log.e("RoomDB",e.getMessage());

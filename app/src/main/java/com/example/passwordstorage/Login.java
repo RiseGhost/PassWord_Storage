@@ -1,33 +1,15 @@
 package com.example.passwordstorage;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.FileUtils;
-import android.util.Log;
-import android.view.Display;
-import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.util.Base64;
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class Login extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
@@ -66,6 +48,10 @@ public class Login extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         sharedPreferences = getSharedPreferences("login", MODE_PRIVATE);
+        if (PassIsRegister()){
+            TextView info = findViewById(R.id.info);
+            info.setText("");
+        }
     }
 
     public void TextViewSetFunc(TextView textView){
