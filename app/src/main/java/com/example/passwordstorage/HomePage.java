@@ -3,6 +3,7 @@ package com.example.passwordstorage;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -43,6 +44,12 @@ public class HomePage extends AppCompatActivity {
         new DB();
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        new DB();
+    }
+
     private class DB extends Thread{
         public DB(){
             start();
@@ -61,8 +68,6 @@ public class HomePage extends AppCompatActivity {
                 handler.post(() -> {
                     //Toast.makeText(getApplicationContext(),String.valueOf(passWords.size()),Toast.LENGTH_SHORT).show();
                     ListView listView = findViewById(R.id.list);
-                    AdapterPassWord adapter = new AdapterPassWord(getApplicationContext(), android.R.layout.simple_list_item_1,passWords);
-                    listView.setAdapter(adapter);
                     RadioGroup CategorySelect = findViewById(R.id.CategorySelect);
                     CategorySelect.removeAllViews();
                     Catgory_BTN All = new Catgory_BTN(getApplicationContext(),"All",listView,Dao);
@@ -72,7 +77,6 @@ public class HomePage extends AppCompatActivity {
                     CategorySelect.addView(new Catgory_BTN(getApplicationContext(),"Web",listView,Dao));
                     CategorySelect.addView(new Catgory_BTN(getApplicationContext(),"Other",listView,Dao));
                     All.setChecked(true);
-
                 });
             }   catch (Exception e){
                 Log.e("RoomDB",e.getMessage());

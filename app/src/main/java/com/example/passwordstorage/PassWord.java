@@ -34,6 +34,7 @@ public class PassWord {
     public int getTheme(){return Theme;}
 
     public void setAppName(String AppName){this.AppName = AppName;}
+    public void setId(int id){this.id = id;}
     public void setPass(byte[] Pass){this.Pass = Pass;}
     public void setCategory(String Category){this.Category = Category;}
 }
