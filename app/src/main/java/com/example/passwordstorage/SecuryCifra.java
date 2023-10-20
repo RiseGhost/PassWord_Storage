@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
@@ -20,11 +21,14 @@ public class SecuryCifra {
     SecretKey secretKey;
     IvParameterSpec ivParam;
     public SecuryCifra(Context context){
-        SharedPreferences sharedPreferences = context.getSharedPreferences("cipher",0);
-        String sk = sharedPreferences.getString("secretkey","");
-        String iv = sharedPreferences.getString("iv","");
-        secretKey = new SecretKeySpec(Base64.getDecoder().decode(sk),"AES");
-        ivParam = new IvParameterSpec(Base64.getDecoder().decode(iv));
+        try{
+            SharedPreferences sharedPreferences = context.getSharedPreferences("cipher",0);
+            String sk = sharedPreferences.getString("secretkey","");
+            String iv = sharedPreferences.getString("iv","");
+            secretKey = new SecretKeySpec(Base64.getDecoder().decode(sk),"AES");
+            ivParam = new IvParameterSpec(Base64.getDecoder().decode(iv));
+        }   catch (Exception e){
+        }
     }
 
     public SecretKey getSecretKey(){return secretKey;}
@@ -40,5 +44,11 @@ public class SecuryCifra {
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
         cipher.init(Cipher.DECRYPT_MODE,secretKey,ivParam);
         return cipher.doFinal(x);
+    }
+
+    public String StringToHash(String str) throws NoSuchAlgorithmException {
+        MessageDigest messageDigest = MessageDigest.getInstance("SHA-512");
+        messageDigest.update(str.getBytes());
+        return new String(messageDigest.digest());
     }
 }

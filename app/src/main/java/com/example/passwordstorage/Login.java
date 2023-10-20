@@ -4,10 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Base64;
 
@@ -65,7 +67,11 @@ public class Login extends AppCompatActivity {
 
     private void CreatePassWord(String pass) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("pass",pass);
+        try{
+            editor.putString("pass",new SecuryCifra(getApplicationContext()).StringToHash(pass));
+        }   catch (NoSuchAlgorithmException e){
+            Log.d("Hash error", e.getMessage());
+        }
         editor.apply();
         InitCypher();
         startActivity(new Intent(Login.this,HomePage.class));
@@ -87,11 +93,15 @@ public class Login extends AppCompatActivity {
 
     private void ValidatePass(String pass){
         String passave = sharedPreferences.getString("pass","");
-        if(passave.equals(pass)){
-            startActivity(new Intent(Login.this, HomePage.class));
-            finish();
+        try{
+            if(passave.equals(new SecuryCifra(getApplicationContext()).StringToHash(pass))){
+                startActivity(new Intent(Login.this, HomePage.class));
+                finish();
+            }
+            else
+                Toast.makeText(Login.this,"Pass Invalid",Toast.LENGTH_SHORT).show();
+        }   catch (NoSuchAlgorithmException e){
+            Log.d("Hash error", e.getMessage());
         }
-        else
-            Toast.makeText(Login.this,"Pass Invalid",Toast.LENGTH_SHORT).show();
     }
 }

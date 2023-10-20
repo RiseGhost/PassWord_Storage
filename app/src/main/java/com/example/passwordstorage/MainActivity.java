@@ -25,7 +25,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(this, Login.class));
                 finish();
             }
-            Toast.makeText(MainActivity.this,pass,Toast.LENGTH_SHORT).show();
             findViewById(R.id.Next).setOnClickListener((event) -> {
                 Intent intent = new Intent(MainActivity.this, Login.class);
                 startActivity(intent);

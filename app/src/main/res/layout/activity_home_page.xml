@@ -64,7 +64,8 @@
         tools:layout_editor_absoluteX="1dp"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
-        android:foregroundGravity="center_vertical">
+        android:foregroundGravity="center_vertical"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="wrap_content"

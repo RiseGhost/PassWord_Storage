@@ -45,7 +45,7 @@ public class Catgory_BTN extends androidx.appcompat.widget.AppCompatRadioButton 
         if (getText().toString().equals(""))    setText("Category");
         setTextColor(Color.WHITE);
         setStyle(getText().toString(),false);
-        setTextSize(18);
+        setTextSize(16);
         setGravity(Gravity.CENTER);
         setOnCheckedChangeListener((buttonView, isChecked) -> {
             setStyle(getText().toString(),isChecked);

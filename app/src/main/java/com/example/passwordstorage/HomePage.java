@@ -28,19 +28,8 @@ public class HomePage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
-        ListView listView = findViewById(R.id.list);
         secretKey = new SecuryCifra(getApplicationContext()).getSecretKey();
         ivParam = new SecuryCifra(getApplicationContext()).getIvParam();
-        /*try {
-
-            String str = "Cona <3";
-            byte[] c = Cifra(str.getBytes(StandardCharsets.US_ASCII));
-            byte[] d = Decifra(c);
-            Toast.makeText(this, new String(c,StandardCharsets.US_ASCII),Toast.LENGTH_SHORT).show();
-            Toast.makeText(this,new String(d,StandardCharsets.US_ASCII),Toast.LENGTH_SHORT).show();
-        } catch (Exception e) {
-            Log.e("Cifra",e.getMessage());
-        }*/
         new DB();
     }
 
