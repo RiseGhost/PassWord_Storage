@@ -1,11 +1,12 @@
 package com.example.passwordstorage.XMLElements;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -20,15 +21,10 @@ import com.example.passwordstorage.SecuryCifra;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
 
 import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-import javax.crypto.SecretKey;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
 
 public class PassView extends LinearLayout {
     private PassWord passWord;
@@ -67,8 +63,16 @@ public class PassView extends LinearLayout {
                 LayoutParams.WRAP_CONTENT
         );
         view.setLayoutParams(layoutParams);
+        ImageView copy = view.findViewById(R.id.image_copy);
+        copy.setOnClickListener((event) -> {
+            ClipboardManager clipboard = null;
+            clipboard = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+            ClipData clip = ClipData.newPlainText("Pass", Pass);
+            clipboard.setPrimaryClip(clip);
+        });
         addView(view);
     }
+
 
     public void setPassWord(String AppName, String Pass, String UserName, String Category, int Theme){
         try{

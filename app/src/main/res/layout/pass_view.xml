@@ -87,4 +87,15 @@
         app:layout_constraintStart_toEndOf="@+id/CategoryView"
         app:layout_constraintTop_toBottomOf="@+id/Pass" />
 
+    <ImageView
+        android:id="@+id/image_copy"
+        android:layout_width="55px"
+        android:layout_height="55px"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toEndOf="@+id/Pass"
+        app:layout_constraintTop_toBottomOf="@+id/UserName"
+        app:srcCompat="@drawable/copy" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
