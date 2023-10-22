@@ -20,7 +20,8 @@ import java.util.Base64;
 
 public class Login extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
-    TextView pass;
+    private TextView pass;
+    private Boolean ChangePIN;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +29,7 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         Button submit = findViewById(R.id.Submit);
         pass = findViewById(R.id.NumberPass);
+        ChangePIN = getIntent().getBooleanExtra("PIN", false);
         TextViewSetFunc(findViewById(R.id.btn1));
         TextViewSetFunc(findViewById(R.id.btn2));
         TextViewSetFunc(findViewById(R.id.btn3));
@@ -46,20 +48,20 @@ public class Login extends AppCompatActivity {
             }
         });
         submit.setOnClickListener((event) -> {
-            if(PassIsRegister())    ValidatePass(pass.getText().toString());
-            else                    CreatePassWord(pass.getText().toString());
+            if(PassIsRegister() && !ChangePIN)      ValidatePass(pass.getText().toString());
+            else                                    CreatePassWord(pass.getText().toString());
         });
 
         SharedPreferences sharedPreferences1 = getSharedPreferences("biometric", MODE_PRIVATE);
         String bio = sharedPreferences1.getString("bio","");
-        if (bio.equals("true"))     ValidateWithBiometric();
+        if (bio.equals("true") && !ChangePIN)     ValidateWithBiometric();
     }
 
     @Override
     public void onResume() {
         super.onResume();
         sharedPreferences = getSharedPreferences("login", MODE_PRIVATE);
-        if (PassIsRegister()){
+        if (PassIsRegister() && !ChangePIN){
             TextView info = findViewById(R.id.info);
             info.setText("");
         }
@@ -82,7 +84,7 @@ public class Login extends AppCompatActivity {
             Log.d("Hash error", e.getMessage());
         }
         editor.apply();
-        InitCypher();
+        if (!ChangePIN)     InitCypher();
         startActivity(new Intent(Login.this,HomePage.class));
         finish();
     }

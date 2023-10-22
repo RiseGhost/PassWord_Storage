@@ -1,8 +1,12 @@
 package com.example.passwordstorage;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Display;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 
@@ -26,5 +30,12 @@ public class Settings extends AppCompatActivity {
             editor.apply();
         });
         if(bio.equals("true"))      biometric.setChecked(true);
+        ImageButton ChangePIN = findViewById(R.id.imageButtonLapis);
+        ChangePIN.setOnClickListener((event) -> {
+            Intent intent = new Intent(this, Login.class);
+            intent.putExtra("PIN", true);
+            startActivity(intent);
+        });
+
     }
 }

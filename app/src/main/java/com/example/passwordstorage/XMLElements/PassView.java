@@ -65,8 +65,7 @@ public class PassView extends LinearLayout {
         view.setLayoutParams(layoutParams);
         ImageView copy = view.findViewById(R.id.image_copy);
         copy.setOnClickListener((event) -> {
-            ClipboardManager clipboard = null;
-            clipboard = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+            ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
             ClipData clip = ClipData.newPlainText("Pass", Pass);
             clipboard.setPrimaryClip(clip);
         });
