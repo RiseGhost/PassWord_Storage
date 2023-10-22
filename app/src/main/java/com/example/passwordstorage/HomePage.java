@@ -4,10 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RadioGroup;
 
@@ -30,6 +32,8 @@ public class HomePage extends AppCompatActivity {
         setContentView(R.layout.activity_home_page);
         secretKey = new SecuryCifra(getApplicationContext()).getSecretKey();
         ivParam = new SecuryCifra(getApplicationContext()).getIvParam();
+        ImageView settings = findViewById(R.id.opc);
+        settings.setOnClickListener((event) -> {startActivity(new Intent(HomePage.this,Settings.class));});
         new DB();
     }
 

@@ -1,8 +1,13 @@
 package com.example.passwordstorage;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
+import androidx.biometric.BiometricPrompt;
+import androidx.core.content.ContextCompat;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -44,6 +49,10 @@ public class Login extends AppCompatActivity {
             if(PassIsRegister())    ValidatePass(pass.getText().toString());
             else                    CreatePassWord(pass.getText().toString());
         });
+
+        SharedPreferences sharedPreferences1 = getSharedPreferences("biometric", MODE_PRIVATE);
+        String bio = sharedPreferences1.getString("bio","");
+        if (bio.equals("true"))     ValidateWithBiometric();
     }
 
     @Override
@@ -103,5 +112,29 @@ public class Login extends AppCompatActivity {
         }   catch (NoSuchAlgorithmException e){
             Log.d("Hash error", e.getMessage());
         }
+    }
+
+    private void ValidateWithBiometric(){
+        BiometricPrompt.PromptInfo promptInfo = new BiometricPrompt.PromptInfo.Builder()
+                .setTitle("Autenticação biométrica")
+                .setSubtitle("Use sua impressão digital para desbloquear")
+                .setNegativeButtonText("Cancelar")
+                .build();
+        BiometricPrompt biometricPrompt = new BiometricPrompt(this, ContextCompat.getMainExecutor(this), new BiometricPrompt.AuthenticationCallback() {
+            @Override
+            public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
+                super.onAuthenticationError(errorCode, errString);
+                Toast.makeText(Login.this,"Error, pls try pin", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
+                super.onAuthenticationSucceeded(result);
+                startActivity(new Intent(Login.this, HomePage.class));
+                finish();
+            }
+        });
+
+        biometricPrompt.authenticate(promptInfo);
     }
 }
