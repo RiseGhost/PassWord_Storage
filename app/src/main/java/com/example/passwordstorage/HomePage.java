@@ -1,6 +1,10 @@
 package com.example.passwordstorage;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.biometric.BiometricPrompt;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentActivity;
 import androidx.room.Room;
 
 import android.app.Dialog;
@@ -14,6 +18,7 @@ import android.widget.ListView;
 import android.widget.RadioGroup;
 
 import com.example.passwordstorage.XMLElements.Catgory_BTN;
+import com.example.passwordstorage.XMLElements.PassCard;
 import com.example.passwordstorage.database.dao.dao;
 import com.example.passwordstorage.database.database;
 
@@ -43,6 +48,38 @@ public class HomePage extends AppCompatActivity {
         new DB();
     }
 
+    public void ValidateWithBiometric(PassWord passWord, String PassWord){
+        BiometricPrompt.PromptInfo promptInfo = new BiometricPrompt.PromptInfo.Builder()
+                .setTitle("Autenticação biométrica")
+                .setSubtitle("Use sua impressão digital para desbloquear")
+                .setNegativeButtonText("Cancelar")
+                .build();
+
+
+        BiometricPrompt biometricPrompt = new BiometricPrompt(this, ContextCompat.getMainExecutor(this), new BiometricPrompt.AuthenticationCallback() {
+            @Override
+            public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
+                super.onAuthenticationError(errorCode, errString);
+            }
+
+            @Override
+            public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
+                super.onAuthenticationSucceeded(result);
+                Intent intent = new Intent(HomePage.this, PassInfo.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("ID", passWord.getId());
+                intent.putExtra("AppName", passWord.getAppName());
+                intent.putExtra("PassWord", PassWord);
+                intent.putExtra("UserName", passWord.getUserName());
+                intent.putExtra("Category", passWord.getCategory());
+                intent.putExtra("Theme",passWord.getTheme());
+                startActivity(intent);
+            }
+        });
+
+        biometricPrompt.authenticate(promptInfo);
+    }
+
     private class DB extends Thread{
         public DB(){
             start();
@@ -63,12 +100,12 @@ public class HomePage extends AppCompatActivity {
                     ListView listView = findViewById(R.id.list);
                     RadioGroup CategorySelect = findViewById(R.id.CategorySelect);
                     CategorySelect.removeAllViews();
-                    Catgory_BTN All = new Catgory_BTN(getApplicationContext(),"All",listView,Dao);
+                    Catgory_BTN All = new Catgory_BTN(getApplicationContext(),"All",listView,Dao,HomePage.this);
                     CategorySelect.addView(All);
-                    CategorySelect.addView(new Catgory_BTN(getApplicationContext(),"Social",listView,Dao));
-                    CategorySelect.addView(new Catgory_BTN(getApplicationContext(),"Games",listView,Dao));
-                    CategorySelect.addView(new Catgory_BTN(getApplicationContext(),"Web",listView,Dao));
-                    CategorySelect.addView(new Catgory_BTN(getApplicationContext(),"Other",listView,Dao));
+                    CategorySelect.addView(new Catgory_BTN(getApplicationContext(),"Social",listView,Dao,HomePage.this));
+                    CategorySelect.addView(new Catgory_BTN(getApplicationContext(),"Games",listView,Dao,HomePage.this));
+                    CategorySelect.addView(new Catgory_BTN(getApplicationContext(),"Web",listView,Dao,HomePage.this));
+                    CategorySelect.addView(new Catgory_BTN(getApplicationContext(),"Other",listView,Dao,HomePage.this));
                     All.setChecked(true);
                 });
             }   catch (Exception e){

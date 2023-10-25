@@ -4,6 +4,7 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import com.example.passwordstorage.PassWord;
 
@@ -15,6 +16,8 @@ public interface dao {
     void Insert(PassWord passWord);
     @Delete
     void Remove(PassWord passWord);
+    @Update
+    void Update(PassWord passWord);
     @Query("SELECT * FROM password")
     List<PassWord> getAll();
     @Query("SELECT * FROM password WHERE Category = 'Social'")
@@ -25,4 +28,6 @@ public interface dao {
     List<PassWord> getWeb();
     @Query("SELECT * FROM password WHERE Category = 'Other'")
     List<PassWord> getOther();
+    @Query("SELECT * FROM password WHERE id = :id")
+    PassWord getPassID(int id);
 }

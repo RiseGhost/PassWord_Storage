@@ -1,5 +1,8 @@
 package com.example.passwordstorage.XMLElements;
 
+import static com.google.android.material.internal.ContextUtils.getActivity;
+
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.AttributeSet;
@@ -10,10 +13,17 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.biometric.BiometricPrompt;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
+import com.example.passwordstorage.HomePage;
+import com.example.passwordstorage.Login;
 import com.example.passwordstorage.PassInfo;
 import com.example.passwordstorage.PassWord;
 import com.example.passwordstorage.R;
@@ -36,6 +46,7 @@ public class PassCard extends LinearLayout {
     private com.example.passwordstorage.PassWord passWord;
     private View card;
     private int Theme = 0;
+    private HomePage activity;
     public PassCard(Context context) {
         super(context);
         init();
@@ -56,8 +67,9 @@ public class PassCard extends LinearLayout {
         init();
     }
 
-    public PassCard(Context context, PassWord passWord){
+    public PassCard(Context context, HomePage activity, PassWord passWord){
         super(context);
+        this.activity = activity;
         init();
         setPassWord(passWord);
         setBackgroundCard();
@@ -65,15 +77,18 @@ public class PassCard extends LinearLayout {
 
     private void init(){
         this.setOnClickListener((event) -> {
-            Intent intent = new Intent(getContext(), PassInfo.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.putExtra("ID", passWord.getId());
-            intent.putExtra("AppName", passWord.getAppName());
-            intent.putExtra("PassWord", PassWord);
-            intent.putExtra("UserName", passWord.getUserName());
-            intent.putExtra("Category", passWord.getCategory());
-            intent.putExtra("Theme",passWord.getTheme());
-            getContext().startActivity(intent);
+            if(passWord.getLock())  activity.ValidateWithBiometric(passWord,PassWord);
+            else {
+                Intent intent = new Intent(getContext(), PassInfo.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("ID", passWord.getId());
+                intent.putExtra("AppName", passWord.getAppName());
+                intent.putExtra("PassWord", PassWord);
+                intent.putExtra("UserName", passWord.getUserName());
+                intent.putExtra("Category", passWord.getCategory());
+                intent.putExtra("Theme",passWord.getTheme());
+                getContext().startActivity(intent);
+            }
         });
         LayoutInflater inflater = LayoutInflater.from(getContext());
 
@@ -132,5 +147,37 @@ public class PassCard extends LinearLayout {
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
         cipher.init(Cipher.DECRYPT_MODE,secretKey,ivParam);
         return cipher.doFinal(x);
+    }
+
+    private void ValidateWithBiometric(){
+        BiometricPrompt.PromptInfo promptInfo = new BiometricPrompt.PromptInfo.Builder()
+                .setTitle("Autenticação biométrica")
+                .setSubtitle("Use sua impressão digital para desbloquear")
+                .setNegativeButtonText("Cancelar")
+                .build();
+
+
+        BiometricPrompt biometricPrompt = new BiometricPrompt((FragmentActivity) getContext(), ContextCompat.getMainExecutor(getContext()), new BiometricPrompt.AuthenticationCallback() {
+            @Override
+            public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
+                super.onAuthenticationError(errorCode, errString);
+            }
+
+            @Override
+            public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
+                super.onAuthenticationSucceeded(result);
+                Intent intent = new Intent(getContext(), PassInfo.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("ID", passWord.getId());
+                intent.putExtra("AppName", passWord.getAppName());
+                intent.putExtra("PassWord", PassWord);
+                intent.putExtra("UserName", passWord.getUserName());
+                intent.putExtra("Category", passWord.getCategory());
+                intent.putExtra("Theme",passWord.getTheme());
+                getContext().startActivity(intent);
+            }
+        });
+
+        biometricPrompt.authenticate(promptInfo);
     }
 }

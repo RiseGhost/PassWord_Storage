@@ -1,5 +1,6 @@
 package com.example.passwordstorage;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,11 +20,13 @@ public class AdapterPassWord extends ArrayAdapter<PassWord> {
     private final Context context;
     private int resource;
     private final List<PassWord> PassWords;
+    private final HomePage activity;
 
-    public AdapterPassWord(@NonNull Context context, int resource, @NonNull List<PassWord> PassWords) {
+    public AdapterPassWord(@NonNull Context context, int resource, @NonNull List<PassWord> PassWords, HomePage activity) {
         super(context, resource);
         this.context = context;
         this.resource = resource;
+        this.activity = activity;
         this.PassWords = PassWords;
     }
 
@@ -34,7 +37,7 @@ public class AdapterPassWord extends ArrayAdapter<PassWord> {
             return new BTNadd(getContext());
         }
         else
-            return new PassCard(context,PassWords.get(position));
+            return new PassCard(context,activity,PassWords.get(position));
     }
 
     //Retorna mais 1 doque o tamanho original da lista porque no fim da lista é necessários adicinar uma view que terá o conteúdo para adicionar uma nova PassWord:

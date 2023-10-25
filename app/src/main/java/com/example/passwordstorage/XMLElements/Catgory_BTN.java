@@ -1,5 +1,6 @@
 package com.example.passwordstorage.XMLElements;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Looper;
@@ -10,6 +11,7 @@ import android.widget.ListView;
 import androidx.core.content.ContextCompat;
 
 import com.example.passwordstorage.AdapterPassWord;
+import com.example.passwordstorage.HomePage;
 import com.example.passwordstorage.R;
 import com.example.passwordstorage.database.dao.dao;
 
@@ -17,16 +19,18 @@ public class Catgory_BTN extends androidx.appcompat.widget.AppCompatRadioButton 
     private static AdapterPassWord adapter;
     private ListView listView;
     private dao Dao;
+    private HomePage activity;
     public Catgory_BTN(Context context) {
         super(context);
         init();
     }
 
-    public Catgory_BTN(Context context, String Text, ListView listView, dao Dao){
+    public Catgory_BTN(Context context, String Text, ListView listView, dao Dao, HomePage activity){
         super(context);
         setText(Text);
         this.listView = listView;
         this.Dao = Dao;
+        this.activity = activity;
         init();
     }
 
@@ -83,15 +87,15 @@ public class Catgory_BTN extends androidx.appcompat.widget.AppCompatRadioButton 
     }
 
     private void applyQuery(){
-        adapter = new AdapterPassWord(getContext(), android.R.layout.simple_list_item_1,Dao.getAll());;
+        adapter = new AdapterPassWord(getContext(), android.R.layout.simple_list_item_1,Dao.getAll(),activity);;
         if(getText().toString().equals("Social"))
-            adapter = new AdapterPassWord(getContext(), android.R.layout.simple_list_item_1,Dao.getSocial());
+            adapter = new AdapterPassWord(getContext(), android.R.layout.simple_list_item_1,Dao.getSocial(),activity);
         else if(getText().toString().equals("Games"))
-            adapter = new AdapterPassWord(getContext(), android.R.layout.simple_list_item_1,Dao.getGames());
+            adapter = new AdapterPassWord(getContext(), android.R.layout.simple_list_item_1,Dao.getGames(),activity);
         else if(getText().toString().equals("Web"))
-            adapter = new AdapterPassWord(getContext(), android.R.layout.simple_list_item_1,Dao.getWeb());
+            adapter = new AdapterPassWord(getContext(), android.R.layout.simple_list_item_1,Dao.getWeb(),activity);
         else if(getText().toString().equals("Other"))
-            adapter = new AdapterPassWord(getContext(), android.R.layout.simple_list_item_1,Dao.getOther());
+            adapter = new AdapterPassWord(getContext(), android.R.layout.simple_list_item_1,Dao.getOther(),activity);
         android.os.Handler handler = new android.os.Handler(Looper.getMainLooper());
         handler.post(() -> {listView.setAdapter(adapter);});
     }

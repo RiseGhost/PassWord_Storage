@@ -6,18 +6,69 @@
     android:layout_height="match_parent"
     tools:context=".PassInfo"
     android:background="#202028">
-    <com.example.passwordstorage.XMLElements.PassView
-        android:id="@+id/PassView"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginTop="75dp"
-        android:padding="10dp"
         android:layout_marginRight="25dp"
         android:layout_marginLeft="25dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginBottom="70dp"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="242dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:divider="@drawable/divider"
+            android:showDividers="middle">
+
+            <com.example.passwordstorage.XMLElements.PassView
+                android:id="@+id/PassView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.495"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                tools:layout_editor_absoluteX="52dp"
+                tools:layout_editor_absoluteY="1dp">
+
+                <ImageView
+                    android:id="@+id/imageViewBiometric"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    app:srcCompat="@drawable/biometria"
+                    tools:layout_editor_absoluteX="32dp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:padding="5dp"
+                    android:text="Lock Pass"
+                    android:textColor="@color/white"
+                    android:gravity="center_vertical"/>
+
+                <Switch
+                    android:id="@+id/bio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:thumb="@drawable/switch_button"
+                    android:track="@drawable/switch_bar" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
 
     <ImageView
         android:id="@+id/back"

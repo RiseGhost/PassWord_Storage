@@ -132,6 +132,8 @@ public class PassView extends LinearLayout {
         this.Theme = Theme;
     }
 
+    public PassWord getPassWord(){return passWord;}
+
     //Build the new PassWord with current data:
     public PassWord BuildPassWord() throws InvalidAlgorithmParameterException, NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
         return new PassWord(AppName,new SecuryCifra(getContext()).Cifra(Pass.getBytes()),UserName,Category,Theme);

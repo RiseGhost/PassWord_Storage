@@ -13,6 +13,7 @@ Este projeto tem como objetivo a criação de um aplicativo para a gestão de Pa
 - Categorizar as senhas
 - Filtar senhas por categoria
 - Login com biometria 👆🏻
+- Lock PassWords with Biometric 👆🏻🔒
 - ...
 
 ## Como a feita a criptografia 🔐:
