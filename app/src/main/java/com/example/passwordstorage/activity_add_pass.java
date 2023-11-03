@@ -78,6 +78,9 @@ public class activity_add_pass extends AppCompatActivity {
             public void afterTextChanged(Editable s) {}
         });
         //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+        findViewById(R.id.RandomPass).setOnClickListener((event) -> {ETPassWord.setText(new SecuryCifra(getApplicationContext()).makePassWord(10));});
+
         findViewById(R.id.Insert).setOnClickListener((event) -> {
             if (ETAppName.getText().toString().equals("")){
                 Toast.makeText(activity_add_pass.this,"AppName Invalid",Toast.LENGTH_SHORT).show();

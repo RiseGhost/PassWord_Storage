@@ -8,6 +8,7 @@ import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
+import java.util.Random;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -20,6 +21,7 @@ import javax.crypto.spec.SecretKeySpec;
 public class SecuryCifra {
     SecretKey secretKey;
     IvParameterSpec ivParam;
+    private static String alfabeto = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwyz0123456789?=;.+*´`~<>ªº";
     public SecuryCifra(Context context){
         try{
             SharedPreferences sharedPreferences = context.getSharedPreferences("cipher",0);
@@ -50,5 +52,9 @@ public class SecuryCifra {
         MessageDigest messageDigest = MessageDigest.getInstance("SHA-512");
         messageDigest.update(str.getBytes());
         return new String(messageDigest.digest());
+    }
+
+    public String makePassWord(int size){
+        return (size == 0) ? "" : alfabeto.charAt((new Random()).nextInt(74)) + makePassWord(size-1);
     }
 }
